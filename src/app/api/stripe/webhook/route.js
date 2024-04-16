@@ -38,19 +38,21 @@ export async function POST(request) {
       //  send request to book (after payment maybe in stripe webhook)
       //  --- accommodationId, combinationKey, externalReference
 
+      const parsedProvider = JSON.parse(reservation.provider) || {};
+
       const res = await fetch(
         process.env.TC_BASE_URL +
-          `/resources/booking/accommodations/${reservation.provider.accommodation.code}/book`,
+          `/resources/booking/accommodations/${parsedProvider.accommodation.code}/book`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "auth-token": reservation.provider.auditData.authToken,
+            "auth-token": parsedProvider.auditData.authToken,
           },
           body: JSON.stringify({
             accommodation: {
               combinationKey:
-                reservation.provider.accommodation.combination.combinationKey,
+                parsedProvider.accommodation.combination.combinationKey,
             },
             externalReference: paymentIntent.metadata.reservationId,
           }),
