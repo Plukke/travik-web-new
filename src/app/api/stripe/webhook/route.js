@@ -65,7 +65,7 @@ export async function POST(request) {
         id: paymentIntent.metadata.reservationId,
         provider: JSON.stringify({ ...data }),
         payment: JSON.stringify({
-          payment: "PAID",
+          status: "PAID",
           intent: paymentIntent,
         }),
       });
