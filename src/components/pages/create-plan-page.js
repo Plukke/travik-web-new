@@ -128,7 +128,7 @@ export const CreatePlanPage = () => {
       const res = await fetch("/api/tracom/booking/quote", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(eq),
+        body: JSON.stringify(req),
       });
 
       const data = await res.json();
