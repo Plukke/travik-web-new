@@ -3,6 +3,13 @@ import usePlacesAutocomplete, {
   getLatLng,
 } from "use-places-autocomplete";
 import useOnclickOutside from "react-cool-onclickoutside";
+import {
+  Description,
+  ErrorMessage,
+  Field,
+  Label,
+} from "@/components/common/fieldset";
+import { Input } from "@/components/common/input";
 
 function SearchInput({ onSelect }) {
   const {
@@ -52,22 +59,50 @@ function SearchInput({ onSelect }) {
       } = suggestion;
 
       return (
-        <li key={place_id} onClick={handleSelect(suggestion)}>
-          <strong>{main_text}</strong> <small>{secondary_text}</small>
+        <li
+          key={place_id}
+          className="relative flex justify-between gap-x-6 px-4 py-5 hover:bg-gray-50 sm:px-6 cursor-pointer"
+          onClick={handleSelect(suggestion)}
+        >
+          <div className="flex min-w-0 gap-x-4">
+            <div className="min-w-0 flex-auto">
+              <div className="text-sm font-semibold leading-6 text-gray-900">
+                <p>
+                  <span className="absolute inset-x-0 -top-px bottom-0" />
+                  {main_text}
+                </p>
+              </div>
+              <p className="mt-1 flex text-xs leading-5 text-gray-500">
+                <p className="relative truncate">{secondary_text}</p>
+              </p>
+            </div>
+          </div>
         </li>
       );
     });
 
   return (
-    <div ref={ref}>
-      <input
-        value={value}
-        onChange={handleInput}
-        disabled={!ready}
-        placeholder="Where are you going?"
-      />
+    <div>
+      <Field ref={ref} className="w-full">
+        <Label>Destino</Label>
+        <Description>¿A dónde quieres ir?</Description>
+        <Input
+          value={value}
+          onChange={handleInput}
+          disabled={!ready}
+          placeholder="Where are you going?"
+        />
+        {/* <ErrorMessage>Required</ErrorMessage> */}
+      </Field>
       {/* We can use the "status" to decide whether we should display the dropdown or not */}
-      {status === "OK" && <ul>{renderSuggestions()}</ul>}
+      {status === "OK" && (
+        <ul
+          role="list"
+          className="divide-y divide-gray-100 overflow-hidden bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl mt-2"
+        >
+          {renderSuggestions()}
+        </ul>
+      )}
     </div>
   );
 }

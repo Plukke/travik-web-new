@@ -25,7 +25,7 @@ export default async function Checkout({ params }) {
   console.log("reservationDetail", reservationDetail);
 
   return (
-    <main className="flex min-h-screen flex-col items-center p-24 space-y-4">
+    <>
       <h1 className="text-4xl font-bold tracking-tight text-gray-900">
         Paga tu reserva
       </h1>
@@ -33,6 +33,6 @@ export default async function Checkout({ params }) {
         reservationId={reservationId}
         reservationDetail={reservationDetail}
       />
-    </main>
+    </>
   );
 }

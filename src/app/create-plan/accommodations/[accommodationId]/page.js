@@ -81,7 +81,7 @@ export default async function AccommodationDetail({ params, searchParams }) {
   console.log("quote", JSON.stringify(quote, null, 2));
 
   return (
-    <main className="flex min-h-screen flex-col items-center p-24 space-y-4">
+    <>
       {/* Image gallery */}
       <div className="mx-auto mt-6 min-w-full max-w-2xl lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8">
         <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
@@ -197,7 +197,10 @@ export default async function AccommodationDetail({ params, searchParams }) {
             <h3 className="sr-only">Description</h3>
 
             <div className="space-y-6">
-              <p className="text-base text-gray-900">{detail.description}</p>
+              <div
+                dangerouslySetInnerHTML={{ __html: detail.description }}
+                className="prose text-base text-gray-900"
+              />
             </div>
           </div>
 
@@ -271,6 +274,6 @@ export default async function AccommodationDetail({ params, searchParams }) {
           </section>
         </div>
       </div>
-    </main>
+    </>
   );
 }

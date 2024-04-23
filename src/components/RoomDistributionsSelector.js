@@ -24,9 +24,11 @@ const RoomDistributionsSelector = ({
     };
 
   return (
-    <div className="shrink-0">
-      <div>{label}</div>
-      <div className="flex ml-4 space-x-2">
+    <div className="shrink-0 pl-8">
+      <div className="select-none text-base/6 text-zinc-950 data-[disabled]:opacity-50 sm:text-sm/6 dark:text-white">
+        {label}
+      </div>
+      <div className="flex space-x-2 mt-1">
         <div>
           <Dropdown>
             <DropdownButton outline>

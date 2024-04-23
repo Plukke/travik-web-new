@@ -3,6 +3,7 @@
 import axios from "axios";
 import { useShallow } from "zustand/react/shallow";
 import { useStore } from "@/store";
+import * as Yup from "yup";
 import { useFormik } from "formik";
 import { generateClient } from "aws-amplify/data";
 
@@ -26,6 +27,7 @@ import * as CountriesList from "@/lib/utils/countryCodes.json";
 import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/20/solid";
 import dayjs from "dayjs";
+import { orderBy } from "lodash";
 
 function useConfirm() {
   return useStore(
@@ -52,92 +54,130 @@ const COMMON_FIELDS = {
 };
 
 const handleFields = (requiredFields, room, person, formik) => {
-  return requiredFields?.map((field, idx) => {
-    const fieldPrefix = `distributions[${room}].persons[${person}]`;
-    const getArgs = (fieldName = COMMON_FIELDS[field]) => ({
-      id: `${fieldPrefix}.${fieldName}`,
-      name: `${fieldPrefix}.${fieldName}`,
-      value: formik.values[`${fieldPrefix}.${fieldName}`],
-      onChange: formik.handleChange,
-    });
+  return orderBy(
+    requiredFields?.map((field, idx) => {
+      const fieldPrefix = `distributions[${room}].persons[${person}]`;
+      const getArgs = (fieldName = COMMON_FIELDS[field]) => ({
+        id: `${fieldPrefix}.${fieldName}`,
+        name: `${fieldPrefix}.${fieldName}`,
+        value: formik.values[`${fieldPrefix}.${fieldName}`],
+        onChange: formik.handleChange,
+      });
 
-    switch (field) {
-      case "TITLE":
-        return (
-          <Field key={idx}>
-            <Label>Título</Label>
-            <Select {...getArgs()}>
-              <option value={""}>Selecciona...</option>
-              <option value={"MRS"}>Sra.</option>
-              <option value={"MS"}>Srta.</option>
-              <option value={"MISTER"}>Sr.</option>
-            </Select>
-          </Field>
-        );
-      case "FIRST_NAME":
-        return (
-          <Field key={idx}>
-            <Label>Nombre(s)</Label>
-            <Input {...getArgs()} />
-          </Field>
-        );
-      case "LAST_NAME":
-        return (
-          <Field key={idx}>
-            <Label>Apellidos</Label>
-            <Input {...getArgs()} />
-          </Field>
-        );
-      case "EMAIL":
-        return (
-          <Field key={idx}>
-            <Label>Email</Label>
-            <Input {...getArgs()} type="email" />
-          </Field>
-        );
-      case "PHONE":
-        return (
-          <div
-            key={idx}
-            className="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-2"
-          >
-            <Field>
-              <Label>Código de país</Label>
+      switch (field) {
+        case "TITLE":
+          return {
+            order: 0,
+            Comp: (
+              <Field key={idx}>
+                <Label>Título</Label>
+                <Select {...getArgs()}>
+                  <option value={""}>Selecciona...</option>
+                  <option value={"MRS"}>Sra.</option>
+                  <option value={"MS"}>Srta.</option>
+                  <option value={"MISTER"}>Sr.</option>
+                </Select>
+              </Field>
+            ),
+          };
+        case "FIRST_NAME":
+          return {
+            order: 1,
+            Comp: (
+              <Field key={idx}>
+                <Label>Nombre(s)</Label>
+                <Input {...getArgs()} />
+              </Field>
+            ),
+          };
+        case "LAST_NAME":
+          return {
+            order: 2,
+            Comp: (
+              <Field key={idx}>
+                <Label>Apellidos</Label>
+                <Input {...getArgs()} />
+              </Field>
+            ),
+          };
+        case "EMAIL":
+          return {
+            order: 3,
+            Comp: (
+              <Field key={idx}>
+                <Label>Email</Label>
+                <Input {...getArgs()} type="email" />
+              </Field>
+            ),
+          };
+        case "PHONE":
+          return {
+            order: 4,
+            Comp: (
+              <div
+                key={idx}
+                className="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-2"
+              >
+                <Field>
+                  <Label>Código de país</Label>
 
-              <Select {...getArgs(COMMON_FIELDS[`${field}_CC`])}>
-                <option value={""}>Selecciona...</option>
-                {CountriesList.map((x, idx) => (
-                  <option key={idx} value={`${x?.dial_code}`}>
-                    ({`${x?.dial_code}`}) {x?.name}
-                  </option>
-                ))}
-              </Select>
-            </Field>
-            <Field>
-              <Label>Número de teléfono</Label>
-              <Input {...getArgs()} />
-            </Field>
-          </div>
-        );
-      case "BIRTH_DATE":
-        return (
-          <Field key={idx}>
-            <Label>Fecha de nacimiento</Label>
-            <Input {...getArgs()} type="date" />
-          </Field>
-        );
-      case "ADDRESS":
-        return (
-          <Field key={idx}>
-            <Label>Dirección</Label>
-            <Input {...getArgs()} />
-          </Field>
-        );
+                  <Select {...getArgs(COMMON_FIELDS[`${field}_CC`])}>
+                    <option value={""}>Selecciona...</option>
+                    {CountriesList.map((x, idx) => (
+                      <option key={idx} value={`${x?.dial_code}`}>
+                        ({`${x?.dial_code}`}) {x?.name}
+                      </option>
+                    ))}
+                  </Select>
+                </Field>
+                <Field>
+                  <Label>Número de teléfono</Label>
+                  <Input {...getArgs()} />
+                </Field>
+              </div>
+            ),
+          };
+        case "BIRTH_DATE":
+          return {
+            order: 5,
+            Comp: (
+              <Field key={idx}>
+                <Label>Fecha de nacimiento</Label>
+                <Input {...getArgs()} type="date" />
+              </Field>
+            ),
+          };
+        case "ADDRESS":
+          return {
+            order: 6,
+            Comp: (
+              <div
+                key={idx}
+                className="grid grid-cols-1 gap-8 sm:grid-cols-3 sm:gap-1"
+              >
+                <Field className="col-span-2">
+                  <Label>Calle</Label>
+                  <Input {...getArgs(COMMON_FIELDS[`${field}.street`])} />
+                </Field>
+                <Field>
+                  <Label>Ciudad</Label>
+                  <Input {...getArgs(COMMON_FIELDS[`${field}.city`])} />
+                </Field>
+                <Field>
+                  <Label>Código postal</Label>
+                  <Input {...getArgs(COMMON_FIELDS[`${field}.postCode`])} />
+                </Field>
+              </div>
+            ),
+          };
 
-      default:
-        return null;
-    }
-  });
+        default:
+          return null;
+      }
+    }),
+    ["order"],
+    ["asc"]
+  ).map((x) => x.Comp);
 };
 
 const client = generateClient();
@@ -157,6 +197,10 @@ export const AccommodationBookingPage = () => {
       distributions: JSON.parse(distributions),
       commentToAccommodation: "",
     },
+    validationSchema: Yup.object().shape({
+      distributions: Yup.array().of(Yup.object()),
+      commentToAccommodation: Yup.string(),
+    }),
     onSubmit: async (values) => {
       console.log("values", values);
 
@@ -180,6 +224,18 @@ export const AccommodationBookingPage = () => {
           }
 
           delete obj["age"];
+
+          if (person.address) {
+            obj["address"] = {
+              ...person.address,
+              fullAddress:
+                person.address.street +
+                " " +
+                person.address.city +
+                " " +
+                person.address.postCode,
+            };
+          }
 
           return obj;
         }),
@@ -227,8 +283,10 @@ export const AccommodationBookingPage = () => {
     },
   });
 
+  console.log("formik.errors", formik.errors);
+
   return (
-    <form onSubmit={formik.handleSubmit}>
+    <form className="space-y-2" onSubmit={formik.handleSubmit}>
       <Fieldset>
         <Legend>Reservación</Legend>
         <Text>Completa los datos de tu reserva y continua al pago.</Text>
@@ -298,7 +356,9 @@ export const AccommodationBookingPage = () => {
         />
         <Description>Agrega comentarios para el hotel.</Description>
       </Field>
-      <Button type="submit">Seguir al pago</Button>
+      <div className="flex flex-col items-end py-4">
+        <Button type="submit">Seguir al pago</Button>
+      </div>
     </form>
   );
 };

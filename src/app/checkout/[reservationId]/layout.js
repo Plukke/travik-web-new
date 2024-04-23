@@ -8,6 +8,7 @@ function CreatePlanLayout({
 }) {
   return (
     <section>
+      {/* Include shared UI here e.g. a header or sidebar */}
       <nav className="flex flex-col items-center py-4">
         <Image
           src="/logo/Asset 1.png"

@@ -45,7 +45,7 @@ export const CheckoutPage = ({ reservationId, reservationDetail }) => {
     <div className="App">
       {clientSecret && (
         <Elements options={options} stripe={stripePromise}>
-          <CheckoutForm />
+          <CheckoutForm reservationId={reservationId} />
         </Elements>
       )}
     </div>

@@ -90,7 +90,7 @@ export const AccommodationsPage = () => {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center p-24 space-y-4">
+    <>
       <div className="mx-auto max-w-7xl overflow-hidden sm:px-6 lg:px-8">
         <h2 className="sr-only">Products</h2>
         <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
@@ -136,6 +136,6 @@ export const AccommodationsPage = () => {
           Siguiente
         </PaginationNext>
       </Pagination>
-    </main>
+    </>
   );
 };

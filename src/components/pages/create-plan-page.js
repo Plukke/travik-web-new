@@ -3,6 +3,7 @@
 import axios from "axios";
 import dayjs from "dayjs";
 import { useFormik } from "formik";
+import * as Yup from "yup";
 import { useMemo } from "react";
 import { useStore } from "@/store";
 import { useRouter } from "next/navigation";
@@ -17,10 +18,12 @@ import {
   RadioGroup as HeadlessRadioGroup,
 } from "@headlessui/react";
 
+import { Description, Field, Label } from "@/components/common/fieldset";
 import { Button } from "@/components/common/button";
 import { Radio } from "@/components/common/radio";
 import SearchInput from "@/components/SearchInput";
 import RoomDistributionsSelector from "../RoomDistributionsSelector";
+import clsx from "clsx";
 
 const initialValues = {
   checkIn: dayjs().toDate(),
@@ -40,6 +43,25 @@ const initialValues = {
     radius: 20,
   },
 };
+
+const validationSchema = Yup.object().shape({
+  checkIn: Yup.date(),
+  checkOut: Yup.date(),
+  rooms: Yup.number().required().positive().integer(),
+  distributions: Yup.array().of(
+    Yup.object().shape({
+      adults: Yup.number().required().integer().default(0),
+      children: Yup.number().required().integer().default(0),
+      infants: Yup.number().required().integer().default(0),
+    })
+  ),
+  locationDescription: Yup.string(),
+  geolocation: Yup.object().shape({
+    latitude: Yup.number().nullable(),
+    longitude: Yup.number().nullable(),
+    radius: Yup.number().required().positive().integer().default(20),
+  }),
+});
 
 function useQuote() {
   return useStore(
@@ -62,6 +84,7 @@ export const CreatePlanPage = () => {
 
   const formik = useFormik({
     initialValues,
+    validationSchema,
     onSubmit: async (values) => {
       // alert(JSON.stringify(values, null, 2));
 
@@ -125,19 +148,19 @@ export const CreatePlanPage = () => {
   });
 
   return (
-    <main className="flex min-h-screen flex-col items-center p-24 space-y-4">
+    <div className="mx-auto max-w-screen-md">
       <div className="mx-auto max-w-2xl text-center">
         <h2 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
           Crear plan
         </h2>
-        <p className="mt-6 text-lg leading-8 text-gray-600">
+        {/* <p className="mt-6 text-lg leading-8 text-gray-600">
           Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem
           cupidatat commodo. Elit sunt amet fugiat veniam occaecat fugiat
           aliqua.
-        </p>
+        </p> */}
       </div>
 
-      <form onSubmit={formik.handleSubmit}>
+      <form onSubmit={formik.handleSubmit} className="w-full space-y-2">
         {isLoaded ? (
           <SearchInput
             onSelect={({ description, lat, lng }) => {
@@ -153,82 +176,102 @@ export const CreatePlanPage = () => {
           "Cargando..."
         )}
 
-        <DateRange
-          onChange={(item) => {
-            formik.setFieldValue("checkIn", item.selection.startDate);
-            formik.setFieldValue("checkOut", item.selection.endDate);
-          }}
-          dateDisplayFormat={"dd/MM/yyyy"}
-          months={1}
-          moveRangeOnFirstSelection={false}
-          renderStaticRange={false}
-          minDate={dayjs().toDate()}
-          maxDate={dayjs().add(180, "days").toDate()}
-          ranges={[
-            {
-              startDate: formik.values.checkIn,
-              endDate: formik.values.checkOut,
-              key: "selection",
-            },
-          ]}
-        />
+        <div
+          className={clsx([
+            { hidden: !formik.values.locationDescription },
+            "space-y-2",
+          ])}
+        >
+          <Field>
+            <Label>Habitaciones</Label>
+            <Description>
+              Selecciona el número de habitaciones para tu reserva
+            </Description>
+            <HeadlessRadioGroup
+              id="rooms"
+              name="rooms"
+              className="mt-4 flex gap-6 sm:gap-8"
+              value={formik.values.rooms}
+              onChange={(value) => {
+                formik.setFieldTouched("rooms", true);
+                formik.setFieldValue("rooms", value);
 
-        <HeadlessFieldset>
-          <HeadlessLegend className="text-base/6 font-medium sm:text-sm/6">
-            Número de habitaciones
-          </HeadlessLegend>
-          <HeadlessRadioGroup
-            id="rooms"
-            name="rooms"
-            className="mt-4 flex gap-6 sm:gap-8"
-            value={formik.values.rooms}
-            onChange={(value) => {
-              formik.setFieldTouched("rooms", true);
-              formik.setFieldValue("rooms", value);
+                const newArr = [...formik.values.distributions];
+                if (formik.values.rooms > value) {
+                  const elemsToDelete = formik.values.rooms - value;
+                  newArr.splice(newArr.length - elemsToDelete, elemsToDelete);
 
-              const newArr = [...formik.values.distributions];
-              if (formik.values.rooms > value) {
-                const elemsToDelete = formik.values.rooms - value;
-                newArr.splice(newArr.length - elemsToDelete, elemsToDelete);
-
-                formik.setFieldValue("distributions", newArr);
-              } else {
-                const elemsToAdd = value - formik.values.rooms;
-                for (let index = 0; index < elemsToAdd; index++) {
-                  newArr.push(initialValues?.distributions?.[0]);
+                  formik.setFieldValue("distributions", newArr);
+                } else {
+                  const elemsToAdd = value - formik.values.rooms;
+                  for (let index = 0; index < elemsToAdd; index++) {
+                    newArr.push(initialValues?.distributions?.[0]);
+                  }
+                  formik.setFieldValue("distributions", newArr);
                 }
-                formik.setFieldValue("distributions", newArr);
-              }
-            }}
-          >
-            {[1, 2, 3, 4, 5].map((roomsQty) => (
-              <HeadlessField key={roomsQty} className="flex items-center gap-2">
-                <Radio value={roomsQty} />
-                <HeadlessLabel className="select-none text-base/6 sm:text-sm/6">
-                  {roomsQty}
-                </HeadlessLabel>
-              </HeadlessField>
-            ))}
-          </HeadlessRadioGroup>
-        </HeadlessFieldset>
+              }}
+            >
+              {[1, 2, 3, 4, 5].map((roomsQty) => (
+                <HeadlessField
+                  key={roomsQty}
+                  className="flex items-center gap-2"
+                >
+                  <Radio value={roomsQty} />
+                  <HeadlessLabel className="select-none text-base/6 sm:text-sm/6">
+                    {roomsQty}
+                  </HeadlessLabel>
+                </HeadlessField>
+              ))}
+            </HeadlessRadioGroup>
+          </Field>
 
-        {formik.values.distributions.map((i, idx) => {
-          return (
-            <RoomDistributionsSelector
-              key={idx}
-              label={`Habitación ${idx + 1}`}
-              value={formik.values.distributions?.[idx]}
-              onChange={(data) =>
-                formik.setFieldValue(`distributions.[${idx}]`, data)
-              }
+          {formik.values.distributions.map((i, idx) => {
+            return (
+              <RoomDistributionsSelector
+                key={idx}
+                label={`Habitación ${idx + 1}`}
+                value={formik.values.distributions?.[idx]}
+                onChange={(data) =>
+                  formik.setFieldValue(`distributions.[${idx}]`, data)
+                }
+              />
+            );
+          })}
+
+          <Field>
+            <Label>Fechas</Label>
+            <Description>
+              Selecciona la fecha de entrada y salida de tu estadía.
+            </Description>
+
+            <DateRange
+              onChange={(item) => {
+                formik.setFieldValue("checkIn", item.selection.startDate);
+                formik.setFieldValue("checkOut", item.selection.endDate);
+              }}
+              dateDisplayFormat={"dd/MM/yyyy"}
+              months={1}
+              moveRangeOnFirstSelection={false}
+              renderStaticRange={false}
+              minDate={dayjs().toDate()}
+              maxDate={dayjs().add(180, "days").toDate()}
+              ranges={[
+                {
+                  startDate: formik.values.checkIn,
+                  endDate: formik.values.checkOut,
+                  key: "selection",
+                },
+              ]}
             />
-          );
-        })}
+          </Field>
 
-        <Button type="submit" className="cursor-pointer">
-          Buscar alojamiento
-        </Button>
+          <div className="flex flex-col items-end my-4 py-4">
+            <Button type="submit" className="cursor-pointer">
+              Buscar alojamiento
+            </Button>
+          </div>
+        </div>
       </form>
-    </main>
+    </div>
   );
 };
