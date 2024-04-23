@@ -125,11 +125,14 @@ export const CreatePlanPage = () => {
       };
       console.log("req", req);
 
-      const { data } = await axios.request({
+      const res = await fetch("/api/tracom/booking/quote", {
         method: "POST",
-        url: `/api/tracom/booking/quote`,
-        data: req,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(eq),
       });
+
+      const data = await res.json();
+      setClientSecret(data.clientSecret);
       console.log("data", data);
 
       setAuthToken(data?.auditData?.authToken);
