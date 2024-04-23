@@ -11,9 +11,7 @@ import { useJsApiLoader } from "@react-google-maps/api";
 import { DateRange } from "react-date-range";
 import {
   Field as HeadlessField,
-  Fieldset as HeadlessFieldset,
   Label as HeadlessLabel,
-  Legend as HeadlessLegend,
   RadioGroup as HeadlessRadioGroup,
 } from "@headlessui/react";
 
@@ -131,7 +129,6 @@ export const CreatePlanPage = () => {
       });
 
       const data = await res.json();
-      setClientSecret(data.clientSecret);
       console.log("data", data);
 
       setAuthToken(data?.auditData?.authToken);
