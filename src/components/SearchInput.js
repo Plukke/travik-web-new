@@ -3,12 +3,7 @@ import usePlacesAutocomplete, {
   getLatLng,
 } from "use-places-autocomplete";
 import useOnclickOutside from "react-cool-onclickoutside";
-import {
-  Description,
-  ErrorMessage,
-  Field,
-  Label,
-} from "@/components/common/fieldset";
+import { Description, Field, Label } from "@/components/common/fieldset";
 import { Input } from "@/components/common/input";
 
 function SearchInput({ onSelect }) {
@@ -72,9 +67,9 @@ function SearchInput({ onSelect }) {
                   {main_text}
                 </p>
               </div>
-              <p className="mt-1 flex text-xs leading-5 text-gray-500">
+              <div className="mt-1 flex text-xs leading-5 text-gray-500">
                 <p className="relative truncate">{secondary_text}</p>
-              </p>
+              </div>
             </div>
           </div>
         </li>

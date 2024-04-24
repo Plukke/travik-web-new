@@ -18,7 +18,7 @@ function CreatePlanLayout({
         />
       </nav>
 
-      <main className="flex flex-col items-center min-h-full space-y-4 mx-32">
+      <main className="flex flex-col items-center min-h-full space-y-4 sm:mx-32 mx-8">
         {children}
       </main>
     </section>

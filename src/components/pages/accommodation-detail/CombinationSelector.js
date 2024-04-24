@@ -1,6 +1,5 @@
 "use client";
 
-import axios from "axios";
 import { Button } from "@/components/common/button";
 import { useRouter } from "next/navigation";
 import { useStore } from "@/store";
@@ -27,17 +26,20 @@ const CombinationSelector = ({
   const handleConfirm = (combinationKey) => async () => {
     console.log("combinationKey", combinationKey);
 
-    const { data } = await axios.request({
+    const res = await fetch("/api/tracom/booking/confirm", {
       method: "POST",
-      url: `/api/tracom/booking/confirm`,
       headers: {
+        "Content-Type": "application/json",
         "x-tracom-token": sessionToken,
       },
-      data: {
+      body: JSON.stringify({
         accommodationId,
         combinationKey,
-      },
+      }),
     });
+
+    const data = await res.json();
+
     console.log("data", data);
     setConfirmation(data);
 

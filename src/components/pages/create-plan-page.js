@@ -82,9 +82,9 @@ export const CreatePlanPage = () => {
   const formik = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: async (values) => {
+    onSubmit: async (values, actions) => {
       // alert(JSON.stringify(values, null, 2));
-
+      actions.setSubmitting(true);
       const distributions = values?.distributions.map((x) => {
         return {
           persons: Array.from(new Array(x.adults || 0), () => {
@@ -147,10 +147,10 @@ export const CreatePlanPage = () => {
   });
 
   return (
-    <div className="mx-auto max-w-screen-md">
+    <div className="mx-auto sm:max-w-screen-md w-full">
       <div className="mx-auto max-w-2xl text-center">
         <h2 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-          Crear plan
+          Crear plan de viaje
         </h2>
         {/* <p className="mt-6 text-lg leading-8 text-gray-600">
           Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem
@@ -265,7 +265,11 @@ export const CreatePlanPage = () => {
           </Field>
 
           <div className="flex flex-col items-end my-4 py-4">
-            <Button type="submit" className="cursor-pointer">
+            <Button
+              type="submit"
+              className="cursor-pointer"
+              disabled={formik.isSubmitting}
+            >
               Buscar alojamiento
             </Button>
           </div>

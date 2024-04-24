@@ -2,7 +2,6 @@
 import { clsx } from "clsx";
 import { headers } from "next/headers";
 // import { useSearchParams } from "next/navigation";
-import { RadioGroup } from "@headlessui/react";
 import { StarIcon } from "@heroicons/react/20/solid";
 import dayjs from "dayjs";
 import CombinationSelector from "@/components/pages/accommodation-detail/CombinationSelector";

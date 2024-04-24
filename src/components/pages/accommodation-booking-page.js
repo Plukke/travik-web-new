@@ -1,6 +1,5 @@
 "use client";
 
-import axios from "axios";
 import { useShallow } from "zustand/react/shallow";
 import { useStore } from "@/store";
 import * as Yup from "yup";
@@ -200,9 +199,9 @@ export const AccommodationBookingPage = () => {
       distributions: Yup.array().of(Yup.object()),
       commentToAccommodation: Yup.string(),
     }),
-    onSubmit: async (values) => {
+    onSubmit: async (values, actions) => {
       console.log("values", values);
-
+      actions.setSubmitting(true);
       // prebook
       // accommodationId
       // accommodation - combinationKey,commentToAccommodation
@@ -241,13 +240,13 @@ export const AccommodationBookingPage = () => {
       }));
       console.log("parsedDistributions", parsedDistributions);
 
-      const { data } = await axios.request({
+      const res = await fetch("/api/tracom/booking/prebook", {
         method: "POST",
-        url: `/api/tracom/booking/prebook`,
         headers: {
+          "Content-Type": "application/json",
           "x-tracom-token": confirmation?.auditData?.authToken,
         },
-        data: {
+        body: JSON.stringify({
           accommodationId: confirmation?.accommodation?.code,
           accommodation: {
             combinationKey:
@@ -255,8 +254,11 @@ export const AccommodationBookingPage = () => {
             commentToAccommodation: values.commentToAccommodation,
           },
           distributions: parsedDistributions,
-        },
+        }),
       });
+
+      const data = await res.json();
+
       console.log("data", data);
 
       if (!data?.error?.length) {
@@ -287,14 +289,13 @@ export const AccommodationBookingPage = () => {
   return (
     <form className="space-y-2" onSubmit={formik.handleSubmit}>
       <Fieldset>
-        <Legend>Reservación</Legend>
         <Text>Completa los datos de tu reserva y continua al pago.</Text>
 
         {confirmation?.warnings?.length ? (
           <Text>{confirmation?.warnings?.join(", ")}</Text>
         ) : null}
 
-        <FieldGroup className="w-full px-4">
+        <FieldGroup className="w-full sm:px-4">
           <div className="mx-auto w-full max-w-md rounded-2xl bg-white p-2">
             {formik.values?.distributions?.map((room, idx) => {
               return (
@@ -345,7 +346,7 @@ export const AccommodationBookingPage = () => {
         </FieldGroup>
       </Fieldset>
       <Field>
-        <Label>Comentarios al hotel</Label>
+        <Label>Comentarios al hotel (opcional)</Label>
         <Textarea
           id="commentToAccommodation"
           name="commentToAccommodation"
@@ -356,7 +357,9 @@ export const AccommodationBookingPage = () => {
         <Description>Agrega comentarios para el hotel.</Description>
       </Field>
       <div className="flex flex-col items-end py-4">
-        <Button type="submit">Seguir al pago</Button>
+        <Button type="submit" disabled={formik.isSubmitting}>
+          Seguir al pago
+        </Button>
       </div>
     </form>
   );

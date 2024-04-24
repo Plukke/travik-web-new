@@ -24,7 +24,7 @@ const RoomDistributionsSelector = ({
     };
 
   return (
-    <div className="shrink-0 pl-8">
+    <div className="shrink-0 sm:pl-8">
       <div className="select-none text-base/6 text-zinc-950 data-[disabled]:opacity-50 sm:text-sm/6 dark:text-white">
         {label}
       </div>
@@ -50,7 +50,7 @@ const RoomDistributionsSelector = ({
         <div>
           <Dropdown>
             <DropdownButton outline>
-              {children} Niñ@{adults === 1 ? "" : "s"} (2–12 años)
+              {children} Niñ@{children === 1 ? "" : "s"} {`(<12 años)`}
               <ChevronDownIcon />
             </DropdownButton>
             <DropdownMenu>
@@ -67,7 +67,7 @@ const RoomDistributionsSelector = ({
             </DropdownMenu>
           </Dropdown>
         </div>
-        <div>
+        {/* <div>
           <Dropdown>
             <DropdownButton outline>
               {infants} Infante{adults === 1 ? "" : "s"} (0–2 años)
@@ -86,7 +86,7 @@ const RoomDistributionsSelector = ({
               })}
             </DropdownMenu>
           </Dropdown>
-        </div>
+        </div> */}
       </div>
     </div>
   );

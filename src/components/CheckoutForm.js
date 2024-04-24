@@ -4,6 +4,7 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
+import { Button } from "./common/button";
 
 export default function CheckoutForm({ reservationId }) {
   const stripe = useStripe();
@@ -90,11 +91,24 @@ export default function CheckoutForm({ reservationId }) {
   return (
     <form id="payment-form" onSubmit={handleSubmit}>
       <PaymentElement id="payment-element" options={paymentElementOptions} />
-      <button disabled={isLoading || !stripe || !elements} id="submit">
-        <span id="button-text">
-          {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}
-        </span>
-      </button>
+
+      <div className="flex flex-col items-end mt-3">
+        <Button
+          type="submit"
+          disabled={isLoading || !stripe || !elements}
+          id="submit"
+          color="green"
+        >
+          <span id="button-text">
+            {isLoading ? (
+              <div className="spinner" id="spinner"></div>
+            ) : (
+              "Pagar ahora"
+            )}
+          </span>
+        </Button>
+      </div>
+
       {/* Show any error or success messages */}
       {message && <div id="payment-message">{message}</div>}
     </form>
