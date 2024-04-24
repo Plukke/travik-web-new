@@ -9,8 +9,15 @@ export default function CheckoutForm({ reservationId }) {
   const stripe = useStripe();
   const elements = useElements();
 
+  const [currURL, setCurrentURL] = React.useState("");
   const [message, setMessage] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(false);
+
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      setCurrentURL(window.location?.href);
+    }
+  }, []);
 
   React.useEffect(() => {
     if (!stripe) {
@@ -58,7 +65,7 @@ export default function CheckoutForm({ reservationId }) {
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: `http://localhost:3001/checkout/${reservationId}/return`,
+        return_url: `${currURL}/checkout/${reservationId}/return`,
       },
     });
 
