@@ -22,8 +22,6 @@ import { Button } from "@/components/common/button";
 import { Textarea } from "@/components/common/textarea";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import * as CountriesList from "@/lib/utils/countryCodes.json";
-
 import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/20/solid";
 import dayjs from "dayjs";
@@ -53,7 +51,7 @@ const COMMON_FIELDS = {
   DOCUMENT_EXPIRY_DATE: "passportExpirationDate",
 };
 
-const handleFields = (requiredFields, room, person, formik) => {
+const handleFields = (requiredFields, room, person, formik, countriesList) => {
   return orderBy(
     requiredFields?.map((field, idx) => {
       const fieldPrefix = `distributions[${room}].persons[${person}]`;
@@ -123,7 +121,7 @@ const handleFields = (requiredFields, room, person, formik) => {
 
                   <Select {...getArgs(COMMON_FIELDS[`${field}_CC`])}>
                     <option value={""}>Selecciona...</option>
-                    {CountriesList.map((x, idx) => (
+                    {countriesList.map((x, idx) => (
                       <option key={idx} value={`${x?.dial_code}`}>
                         ({`${x?.dial_code}`}) {x?.name}
                       </option>
@@ -182,7 +180,7 @@ const handleFields = (requiredFields, room, person, formik) => {
 
 const client = generateClient();
 
-export const AccommodationBookingPage = () => {
+export const AccommodationBookingPage = ({ countriesList }) => {
   const searchParams = useSearchParams();
   const { confirmation } = useConfirm();
   const distributions = searchParams.get("distributions");
@@ -330,7 +328,8 @@ export const AccommodationBookingPage = () => {
                                       ),
                                   idx,
                                   i,
-                                  formik
+                                  formik,
+                                  countriesList
                                 )}
                               </div>
                             );

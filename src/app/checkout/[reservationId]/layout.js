@@ -15,6 +15,7 @@ function CreatePlanLayout({
           width={180}
           height={180}
           alt="Travik logo"
+          className="w-auto h-auto"
         />
       </nav>
 
