@@ -26,6 +26,7 @@ import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/20/solid";
 import dayjs from "dayjs";
 import { orderBy } from "lodash";
+import countries from "@/lib/utils/countryCodes";
 
 function useConfirm() {
   return useStore(
@@ -51,7 +52,7 @@ const COMMON_FIELDS = {
   DOCUMENT_EXPIRY_DATE: "passportExpirationDate",
 };
 
-const handleFields = (requiredFields, room, person, formik, countriesList) => {
+const handleFields = (requiredFields, room, person, formik) => {
   return orderBy(
     requiredFields?.map((field, idx) => {
       const fieldPrefix = `distributions[${room}].persons[${person}]`;
@@ -121,7 +122,7 @@ const handleFields = (requiredFields, room, person, formik, countriesList) => {
 
                   <Select {...getArgs(COMMON_FIELDS[`${field}_CC`])}>
                     <option value={""}>Selecciona...</option>
-                    {countriesList.map((x, idx) => (
+                    {countries.map((x, idx) => (
                       <option key={idx} value={`${x?.dial_code}`}>
                         ({`${x?.dial_code}`}) {x?.name}
                       </option>
@@ -180,7 +181,7 @@ const handleFields = (requiredFields, room, person, formik, countriesList) => {
 
 const client = generateClient();
 
-export const AccommodationBookingPage = ({ countriesList }) => {
+export const AccommodationBookingPage = () => {
   const searchParams = useSearchParams();
   const { confirmation } = useConfirm();
   const distributions = searchParams.get("distributions");
@@ -328,8 +329,7 @@ export const AccommodationBookingPage = ({ countriesList }) => {
                                       ),
                                   idx,
                                   i,
-                                  formik,
-                                  countriesList
+                                  formik
                                 )}
                               </div>
                             );
