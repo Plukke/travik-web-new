@@ -16,7 +16,7 @@ export default function CheckoutForm({ reservationId }) {
 
   React.useEffect(() => {
     if (typeof window !== "undefined") {
-      setCurrentURL(window.location?.href);
+      setCurrentURL(window.location?.hostname);
     }
   }, []);
 
@@ -66,7 +66,7 @@ export default function CheckoutForm({ reservationId }) {
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: `${currURL}/checkout/${reservationId}/return`,
+        return_url: `https://${currURL}/checkout/${reservationId}/return`,
       },
     });
 
