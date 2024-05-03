@@ -1,15 +1,14 @@
 "use client";
-import { PaperClipIcon } from "@heroicons/react/20/solid";
 import dayjs from "dayjs";
 
 export default function BookingSummary({ reservationDetail }) {
-  const { id, provider, payment } = reservationDetail || {};
+  const { id, provider } = reservationDetail || {};
   const parsedProvider =
     provider && typeof provider === "string" ? JSON.parse(provider) : {};
   console.log("parsedProvider", parsedProvider);
 
-  const parsedPayment =
-    payment && typeof payment === "string" ? JSON.parse(payment) : {};
+  // const parsedPayment =
+  //   payment && typeof payment === "string" ? JSON.parse(payment) : {};
 
   const { accommodation } = parsedProvider || {};
 
@@ -32,7 +31,10 @@ export default function BookingSummary({ reservationDetail }) {
                 accommodation?.checkIn,
                 "days"
               )}{" "}
-              | Del {accommodation?.checkIn} al {accommodation?.checkOut}
+              <span className="text-xs">
+                Del <b className="font-bold">{accommodation?.checkIn}</b> al{" "}
+                <b className="font-bold">{accommodation?.checkOut}</b>
+              </span>
             </dd>
           </div>
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
