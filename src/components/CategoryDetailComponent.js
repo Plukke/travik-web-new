@@ -173,7 +173,7 @@ export default function CategoryDetailComponent() {
               <button
                 type="button"
                 onClick={() => setMobileFiltersOpen(false)}
-                className="-mr-2 flex h-10 w-10 items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="-mr-2 flex h-10 w-10 items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-orange-500"
               >
                 <span className="sr-only">Close menu</span>
                 <XMarkIcon aria-hidden="true" className="h-6 w-6" />
@@ -211,7 +211,7 @@ export default function CategoryDetailComponent() {
                             id={`filter-mobile-${section.id}-${optionIdx}`}
                             name={`${section.id}[]`}
                             type="checkbox"
-                            className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                            className="h-4 w-4 rounded border-gray-300 text-orange-600 focus:ring-orange-500"
                           />
                           <label
                             htmlFor={`filter-mobile-${section.id}-${optionIdx}`}
@@ -324,7 +324,7 @@ export default function CategoryDetailComponent() {
                               id={`filter-${section.id}-${optionIdx}`}
                               name={`${section.id}[]`}
                               type="checkbox"
-                              className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                              className="h-4 w-4 rounded border-gray-300 text-orange-600 focus:ring-orange-500"
                             />
                             <label
                               htmlFor={`filter-${section.id}-${optionIdx}`}

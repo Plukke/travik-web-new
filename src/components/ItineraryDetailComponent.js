@@ -132,7 +132,7 @@ export default function ItineraryDetailComponent() {
                       </span>
                       <span
                         aria-hidden="true"
-                        className="pointer-events-none absolute inset-0 rounded-md ring-2 ring-transparent ring-offset-2 group-data-[selected]:ring-indigo-500"
+                        className="pointer-events-none absolute inset-0 rounded-md ring-2 ring-transparent ring-offset-2 group-data-[selected]:ring-orange-500"
                       />
                     </Tab>
                   ))}
@@ -176,7 +176,7 @@ export default function ItineraryDetailComponent() {
                         aria-hidden="true"
                         className={clsx(
                           product.rating > rating
-                            ? "text-indigo-500"
+                            ? "text-orange-500"
                             : "text-gray-300",
                           "h-5 w-5 flex-shrink-0"
                         )}
@@ -233,7 +233,7 @@ export default function ItineraryDetailComponent() {
                 <div className="mt-10 flex">
                   <button
                     type="submit"
-                    className="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full"
+                    className="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-orange-600 px-8 py-3 text-base font-medium text-white hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full"
                   >
                     Add to bag
                   </button>
@@ -261,7 +261,7 @@ export default function ItineraryDetailComponent() {
                     <Disclosure key={detail.name} as="div">
                       <h3>
                         <DisclosureButton className="group relative flex w-full items-center justify-between py-6 text-left">
-                          <span className="text-sm font-medium text-gray-900 group-data-[open]:text-indigo-600">
+                          <span className="text-sm font-medium text-gray-900 group-data-[open]:text-orange-600">
                             {detail.name}
                           </span>
                           <span className="ml-6 flex items-center">
@@ -271,7 +271,7 @@ export default function ItineraryDetailComponent() {
                             />
                             <MinusIcon
                               aria-hidden="true"
-                              className="hidden h-6 w-6 text-indigo-400 group-hover:text-indigo-500 group-data-[open]:block"
+                              className="hidden h-6 w-6 text-orange-400 group-hover:text-orange-500 group-data-[open]:block"
                             />
                           </span>
                         </DisclosureButton>
@@ -357,7 +357,7 @@ export default function ItineraryDetailComponent() {
               <div className="col-span-1 md:col-span-2 lg:col-start-1 lg:row-start-1">
                 <img
                   alt=""
-                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                  src="https://tailwindui.com/img/logos/mark.svg?color=orange&shade=600"
                   className="h-8 w-auto"
                 />
               </div>
@@ -436,12 +436,12 @@ export default function ItineraryDetailComponent() {
                     type="text"
                     required
                     autoComplete="email"
-                    className="w-full min-w-0 appearance-none rounded-md border border-gray-300 bg-white px-4 py-2 text-base text-gray-900 placeholder-gray-500 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                    className="w-full min-w-0 appearance-none rounded-md border border-gray-300 bg-white px-4 py-2 text-base text-gray-900 placeholder-gray-500 shadow-sm focus:border-orange-500 focus:outline-none focus:ring-1 focus:ring-orange-500"
                   />
                   <div className="ml-4 flex-shrink-0">
                     <button
                       type="submit"
-                      className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                      className="flex w-full items-center justify-center rounded-md border border-transparent bg-orange-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
                     >
                       Sign up
                     </button>
