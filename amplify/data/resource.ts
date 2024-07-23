@@ -13,7 +13,35 @@ const schema = a.schema({
       query: a.json(),
       payment: a.json(),
     })
-    .authorization([a.allow.public()]),
+    .authorization((allow) => [allow.publicApiKey()]),
+  Category: a
+    .model({
+      title: a.string().required(),
+      description: a.string(),
+      icon: a.string(),
+      status: a.enum(["ENABLED", "DISABLED"]),
+      itineraries: a.hasMany("ItineraryCategory", "categoryId"),
+    })
+    .authorization((allow) => [allow.publicApiKey()]),
+  Itinerary: a
+    .model({
+      title: a.string().required(),
+      description: a.string(),
+      price: a.integer(),
+      coverUrl: a.string(),
+      status: a.enum(["ENABLED", "DISABLED"]),
+      categories: a.hasMany("ItineraryCategory", "itineraryId"),
+    })
+    .authorization((allow) => [allow.publicApiKey()]),
+  ItineraryCategory: a
+    .model({
+      itineraryId: a.id().required(),
+      categoryId: a.id().required(),
+
+      itinerary: a.belongsTo("Itinerary", "itineraryId"),
+      category: a.belongsTo("Category", "categoryId"),
+    })
+    .authorization((allow) => [allow.publicApiKey()]),
 });
 
 export type Schema = ClientSchema<typeof schema>;

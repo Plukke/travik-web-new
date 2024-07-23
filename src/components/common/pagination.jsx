@@ -6,9 +6,9 @@ export function Pagination({ 'aria-label': ariaLabel = 'Page navigation', classN
   return <nav aria-label={ariaLabel} {...props} className={clsx(className, 'flex gap-x-2')} />
 }
 
-export function PaginationPrevious({ href = null, children = 'Previous' }) {
+export function PaginationPrevious({ href = null, className, children = 'Previous' }) {
   return (
-    <span className="grow basis-0">
+    <span className={clsx(className, 'grow basis-0')}>
       <Button {...(href === null ? { disabled: true } : { href })} plain aria-label="Previous page">
         <svg className="stroke-current" data-slot="icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
           <path
@@ -24,9 +24,9 @@ export function PaginationPrevious({ href = null, children = 'Previous' }) {
   )
 }
 
-export function PaginationNext({ href = null, children = 'Next' }) {
+export function PaginationNext({ href = null, className, children = 'Next' }) {
   return (
-    <span className="flex grow basis-0 justify-end">
+    <span className={clsx(className, 'flex grow basis-0 justify-end')}>
       <Button {...(href === null ? { disabled: true } : { href })} plain aria-label="Next page">
         {children}
         <svg className="stroke-current" data-slot="icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -42,11 +42,11 @@ export function PaginationNext({ href = null, children = 'Next' }) {
   )
 }
 
-export function PaginationList({ children }) {
-  return <span className="hidden items-baseline gap-x-2 sm:flex">{children}</span>
+export function PaginationList({ className, ...props }) {
+  return <span {...props} className={clsx(className, 'hidden items-baseline gap-x-2 sm:flex')} />
 }
 
-export function PaginationPage({ href, children, current = false }) {
+export function PaginationPage({ href, className, current = false, children }) {
   return (
     <Button
       href={href}
@@ -54,6 +54,7 @@ export function PaginationPage({ href, children, current = false }) {
       aria-label={`Page ${children}`}
       aria-current={current ? 'page' : undefined}
       className={clsx(
+        className,
         'min-w-[2.25rem] before:absolute before:-inset-px before:rounded-lg',
         current && 'before:bg-zinc-950/5 dark:before:bg-white/10'
       )}
@@ -63,13 +64,17 @@ export function PaginationPage({ href, children, current = false }) {
   )
 }
 
-export function PaginationGap() {
+export function PaginationGap({ className, children = <>&hellip;</>, ...props }) {
   return (
-    <div
+    <span
       aria-hidden="true"
-      className="w-[2.25rem] select-none text-center text-sm/6 font-semibold text-zinc-950 dark:text-white"
+      {...props}
+      className={clsx(
+        className,
+        'w-[2.25rem] select-none text-center text-sm/6 font-semibold text-zinc-950 dark:text-white'
+      )}
     >
-      &hellip;
-    </div>
+      {children}
+    </span>
   )
 }

@@ -31,6 +31,7 @@ export default function BookingSummary({ reservationDetail }) {
                 accommodation?.checkIn,
                 "days"
               )}{" "}
+              |{" "}
               <span className="text-xs">
                 Del <b className="font-bold">{accommodation?.checkIn}</b> al{" "}
                 <b className="font-bold">{accommodation?.checkOut}</b>

@@ -12,7 +12,6 @@ import {
   FieldGroup,
   Fieldset,
   Label,
-  Legend,
 } from "@/components/common/fieldset";
 import { Input } from "@/components/common/input";
 import { Select } from "@/components/common/select";
