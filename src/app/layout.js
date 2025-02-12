@@ -78,7 +78,7 @@ export default function RootLayout({ stacked, children }) {
 
                       <DarkModeButton />
 
-                      <DropdownItem href="/logout">
+                      <DropdownItem action="signout">
                         <ArrowRightStartOnRectangleIcon />
                         <DropdownLabel>Sign out</DropdownLabel>
                       </DropdownItem>

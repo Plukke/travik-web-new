@@ -6,6 +6,8 @@ import clsx from 'clsx'
 import { Button } from './button'
 import { Link } from './link'
 
+import { signOut } from 'aws-amplify/auth'
+
 export function Dropdown(props) {
   return <Headless.Menu {...props} />
 }
@@ -69,7 +71,11 @@ export function DropdownItem({ className, ...props }) {
       {'href' in props ? (
         <Link {...props} className={classes} />
       ) : (
+        props.action === "signout" ? (
+          <button type="button" onClick={signOut} {...props} className={classes} />
+        ) : (
         <button type="button" {...props} className={classes} />
+        )
       )}
     </Headless.MenuItem>
   )

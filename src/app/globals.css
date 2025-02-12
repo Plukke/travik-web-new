@@ -26,6 +26,40 @@ body {
     rgb(var(--background-start-rgb));
 } */
 
+:root {
+  --travik-black: #232323;
+  --travik-pink: #ff4c8e;
+  --travik-orange: #ff9728;
+  --travik-gray: #e5e5e5;
+}
+
+[data-amplify-authenticator] {
+  --amplify-components-button-primary-background-color: var(--travik-orange);
+  --amplify-components-tabs-item-active-color: var(--travik-orange);
+  --amplify-components-tabs-item-active-border-color: var(--travik-orange);
+  --amplify-components-button-link-color: var(--travik-pink);
+  --amplify-components-button-link-hover-background-color: var(--travik-gray);
+  --amplify-components-button-link-hover-color: var(--travik-black);
+}
+
+.amplify-button--primary{
+  background: linear-gradient(90deg, var(--travik-orange), var(--travik-pink));
+  border-radius: 0.375rem;
+}
+.amplify-button--loading {
+  background: linear-gradient(90deg, var(--travik-orange), var(--travik-pink));
+  border-radius: 0.375rem;
+  color: var(--amplify-internal-button-color);
+}
+input[type="text"].amplify-input, input[type="password"].amplify-input, input[type="email"].amplify-input {
+  padding:  6px 12px;
+  border-color: #d1d5dc;
+  border-radius: 0.375rem;
+}
+input[type="text"].amplify-input:focus, input[type="password"].amplify-input:focus, input[type="email"].amplify-input:focus {
+  border-color: var(--travik-pink);
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
